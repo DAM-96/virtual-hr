@@ -1,2 +1,2 @@
 # virtual-hr
-An online employee management tool with a database created with SQL
+An employee management terminal tool with a database created with SQL
