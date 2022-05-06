@@ -4,7 +4,8 @@
   "description": "A web application aimed to help health workers quickly find and update other users' clinical histories on a database fed by other health workers and professionals.",
   "main": "index.js",
   "scripts": {
-    "test": "node index"
+    "test": "node index",
+    "start": "node index"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,8 @@
   },
   "homepage": "https://github.com/DAM-96/virtual-hr#readme",
   "dependencies": {
-    "inquirer": "^8.2.4"
+    "express": "^4.18.1",
+    "inquirer": "^8.2.4",
+    "mysql": "^2.18.1"
   }
 }
