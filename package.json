@@ -1,0 +1,27 @@
+{
+  "name": "virtual-hr",
+  "version": "1.0.0",
+  "description": "A web application aimed to help health workers quickly find and update other users' clinical histories on a database fed by other health workers and professionals.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DAM-96/virtual-hr.git"
+  },
+  "keywords": [
+    "mysql",
+    "hr",
+    "management"
+  ],
+  "author": "Daniel Moreno",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DAM-96/virtual-hr/issues"
+  },
+  "homepage": "https://github.com/DAM-96/virtual-hr#readme",
+  "dependencies": {
+    "inquirer": "^8.2.4"
+  }
+}
