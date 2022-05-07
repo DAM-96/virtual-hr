@@ -1,25 +1,51 @@
-const express = require("express");
-const mysql = require("mysql");
+const mysql = require("mysql2");
+const { execSync } = require("child_process");
+const path = require("path");
 
-const PORT = process.env.PORT || 3001;
-const app = express ();
+const dbOpsPath = `${__dirname}/db/`;
+const dbSchema = "schema.sql";
+const dbSeeds = "seeds.sql";
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+function normalizeJoin(dbFile){
+    return path.normalize(path.join(dbOpsPath, dbFile)).replace(/\\/g, '/');
+};
 
 class dbConnection {
-    constructor(username, password) {
-        this.username = username;
-        this.password = password;
+    constructor(username, password, seed=false, rebase=false) {
+        try {
+            if (rebase) {
+                execSync(`mysql -u${username} -p${password} < \"${normalizeJoin(dbSchema)}\"`);
+            } else {
+                execSync(`mysql -u${username} -p${password}`);
+            }
+            if (seed) execSync(`mysql -u${username} -p${password} < \"${normalizeJoin(dbSeeds)}\"`);
+        } catch (error) {
+            console.error("Unable to connect to MySQL DB with these credentials.", error, "\n\nExiting the application...");
+            throw new Error(error);
+        }
         this.db = mysql.createConnection(
             {
                 host: 'localhost',
-                user: this.username,
-                password: this.password,
+                user: username,
+                password: password,
                 database: 'virtual_hr'
             },
-            console.log("Successfully connected to the Virtual HR database with user: ", this.username)
+            console.log("Attempting to connect to the DB with user: ", username)
         );
+    }
+
+    deliverQueryPromise(query, querySettings){
+        let queryPromise = new Promise((fulfill, reject) => {
+            this.db.query( query, querySettings, (error, data) => {
+                if(error){
+                    console.error("There was an error processing the query: ",error);
+                    return reject(error);
+                } else {
+                    fulfill(data);
+                }
+            });
+        });
+        return queryPromise; 
     }
 }
 
